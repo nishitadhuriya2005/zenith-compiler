@@ -1,0 +1,21 @@
+// Zenith Test Case 03: Function Declarations, Parameter Scopes, and Invocations
+
+fn max_value(x: int, y: int) -> int {
+    if (x > y) {
+        return x;
+    } else {
+        return y;
+    }
+}
+
+fn compute_discount(price: float, rate: float) -> float {
+    let discount: float = price * rate;
+    let final_price: float = price - discount;
+    return final_price;
+}
+
+let m: int = max_value(45, 92);
+let discounted_laptop: float = compute_discount(1200.0, 0.15);
+
+print("Maximum between 45 and 92 is:", m);
+print("Final price after discount is:", discounted_laptop);

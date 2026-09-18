@@ -1,0 +1,35 @@
+// Zenith Test Case 02: Control Flow Structures (if-elif-else, while, for)
+let score: int = 85;
+let grade: string = "F";
+
+// Conditional Branching
+if (score >= 90) {
+    grade = "A";
+} elif (score >= 80) {
+    grade = "B";
+} elif (score >= 70) {
+    grade = "C";
+} else {
+    grade = "D";
+}
+
+print("Student Grade:", grade);
+
+// While Loop: Accumulate sum
+let counter: int = 1;
+let total_sum: int = 0;
+
+while (counter <= 5) {
+    total_sum = total_sum + counter;
+    counter = counter + 1;
+}
+
+print("While loop sum (1 to 5):", total_sum);
+
+// For Loop: Factorial calculation
+let fact: int = 1;
+for (let i: int = 1; i <= 5; i = i + 1) {
+    fact = fact * i;
+}
+
+print("For loop factorial of 5:", fact);

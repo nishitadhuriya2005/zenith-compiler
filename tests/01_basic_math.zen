@@ -1,0 +1,18 @@
+// Zenith Test Case 01: Variables, Types, and Arithmetic Precedence
+const PI: float = 3.14159;
+let radius: float = 5.0;
+let area: float = PI * radius * radius;
+
+let a: int = 10;
+let b: int = 20;
+let c: int = 5;
+
+// Demonstrates precedence: multiplication happens before addition
+let result: int = a + b * c - (a / 2);
+
+let is_valid: bool = (result > 50) && (area >= 75.0);
+
+print("Radius:", radius);
+print("Calculated Area:", area);
+print("Computed Result:", result);
+print("Validation Flag:", is_valid);

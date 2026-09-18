@@ -1,0 +1,13 @@
+// Zenith Test Case 04: Intentional Syntax & Lexical Errors
+// Used to demonstrate robust error detection, line & column reporting, and parser recovery.
+
+// 1. Missing type specifier after colon
+let invalid_var: = 100;
+
+// 2. Missing closing parenthesis in if condition
+if (x > 10 {
+    print("Invalid condition syntax");
+}
+
+// 3. Unrecognized lexical symbol
+let illegal_symbol = 50 @ 10;

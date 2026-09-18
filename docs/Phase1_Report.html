@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenith Compiler - Phase 1 Project Report</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 15mm 20mm 15mm;
+  }
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1a202c;
+    line-height: 1.6;
+    margin: 0;
+    padding: 30px;
+    background-color: #ffffff;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .cover {
+    text-align: center;
+    padding: 40px 20px;
+    border-bottom: 3px solid #2b6cb0;
+    margin-bottom: 30px;
+  }
+  .cover h1 {
+    font-size: 24pt;
+    color: #1a365d;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .cover h2 {
+    font-size: 13pt;
+    color: #2b6cb0;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .cover .meta {
+    font-size: 10.5pt;
+    color: #4a5568;
+    line-height: 1.8;
+  }
+  h2.chapter-title {
+    font-size: 16pt;
+    color: #1a365d;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 6px;
+    margin-top: 35px;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #2b6cb0;
+    margin-top: 20px;
+  }
+  p, li {
+    font-size: 10.5pt;
+    color: #2d3748;
+    text-align: justify;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 10pt;
+  }
+  th, td {
+    border: 1px solid #cbd5e0;
+    padding: 10px 12px;
+    text-align: left;
+  }
+  th {
+    background-color: #ebf8ff;
+    color: #2b6cb0;
+    font-weight: 600;
+  }
+  tr:nth-child(even) {
+    background-color: #f7fafc;
+  }
+  .abstract-box {
+    background-color: #ebf8ff;
+    border: 1px solid #bee3f8;
+    border-left: 5px solid #3182ce;
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 4px;
+  }
+  .page-break {
+    page-break-before: always;
+  }
+  @media print {
+    body {
+      padding: 0;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="cover">
+    <p style="font-weight: bold; color: #718096; letter-spacing: 2px; text-transform: uppercase;">Compiler Design Laboratory Project</p>
+    <h1>ZENITH COMPILER</h1>
+    <h2>A Strongly-Typed Procedural Language Compiler with AST Visualization, Scoped Symbol Table, and Intermediate Three-Address Code (TAC) Generation</h2>
+    <div class="meta">
+      <strong>Course:</strong> Compiler Design Laboratory<br>
+      <strong>Phase:</strong> Phase 1 – Problem Definition, Language Specification & System Design<br>
+      <strong>Project Type:</strong> Individual Project Submission<br>
+      <strong>Review Target:</strong> Review 1 (20 Marks)
+    </div>
+  </div>
+
+  <div class="abstract-box">
+    <h3 style="margin-top: 0; color: #2b6cb0;">EXECUTIVE ABSTRACT</h3>
+    <p>This report details the architectural specification, formal language design, and front-end engineering for the Zenith programming language compiler. The project focuses on bridging educational clarity with formal compiler construction theory, modeling each canonical phase of language translation: lexical analysis, deterministic parsing, abstract syntax tree generation, hierarchical symbol table scoping, intermediate representation generation, and machine-independent optimization. Phase 1 establishes the foundational design requirements, formal grammar definitions, multi-pass system architecture, and initial prototype verification in accordance with the Phase 1 evaluation rubric.</p>
+  </div>
+
+  <h2 class="chapter-title">Chapter 1: Introduction & Motivation</h2>
+  <h3>1.1 Background</h3>
+  <p>Compilers form the foundational backbone of computer science and software engineering, translating human-readable high-level programming language representations into machine-executable instructions. The study of compiler construction encompasses formal language grammars, automata theory, syntax-directed translation, lexical scoping models, and intermediate code representations. A classical compiler architecture consists of Front-End analysis, Middle-End intermediate representation, and Back-End target execution.</p>
+
+  <h3>1.2 Problem Domain & Motivation</h3>
+  <p>Modern software development presents a stark dichotomy: dynamically typed scripting languages defer type and scoping validation until runtime, causing catastrophic failures in production; while large-scale industrial compilers operate as opaque systems where internal abstract syntax trees and intermediate transformations cannot be inspected for academic analysis. The Zenith compiler project addresses this by implementing a strongly-typed procedural language where each compilation phase is strictly decoupled, transparent, and verifiable.</p>
+
+  <h2 class="chapter-title">Chapter 2: Problem Statement</h2>
+  <p>To formulate, design, and validate an end-to-end multi-pass compiler system for the Zenith procedural language that:</p>
+  <ul>
+    <li><strong>Lexical Analysis:</strong> Converts raw source character sequences into classified tokens while tracking line and column position metadata.</li>
+    <li><strong>Syntax Analysis:</strong> Parses the token stream using deterministic LL(1) recursive descent parsing governed by an unambiguous formal grammar.</li>
+    <li><strong>Syntax-Directed Translation:</strong> Constructs a strongly-typed Abstract Syntax Tree representing program hierarchy free of syntactic punctuation.</li>
+    <li><strong>Scope & Symbol Management:</strong> Maintains an active scoped symbol table supporting nested lexical environments and duplicate declaration prevention.</li>
+    <li><strong>Intermediate Code Generation:</strong> Translates validated abstract syntax trees into linearized Three-Address Code instructions during subsequent phases.</li>
+  </ul>
+
+  <h2 class="chapter-title">Chapter 3: Objectives and Scope</h2>
+  <h3>3.1 Primary Objectives</h3>
+  <ul>
+    <li>Specify an unambiguous Context-Free Grammar in Extended Backus-Naur Form (EBNF).</li>
+    <li>Implement a deterministic lexical analyzer with coordinate tracking and comment filtering.</li>
+    <li>Construct an LL(1) Recursive Descent Parser with precedence climbing and panic-mode error recovery.</li>
+    <li>Implement an explicit Abstract Syntax Tree hierarchy with visual inspection capabilities.</li>
+    <li>Develop a Scoped Symbol Table supporting block and function scopes.</li>
+    <li>Deliver a CLI driver and interactive REPL mode for live demonstration.</li>
+  </ul>
+
+  <h3>3.2 Scope Boundaries</h3>
+  <p>The project encompasses core procedural programming primitives including static data types (integer, float, boolean, string, void), mutable and immutable variable bindings, structured control flow (branching and looping), and function declarations with typed signatures. Dynamic heap garbage collection and object-oriented inheritance are formally excluded to maintain strict focus on core compiler pipeline fundamentals.</p>
+
+  <div class="page-break"></div>
+
+  <h2 class="chapter-title">Chapter 4: Literature Survey & Theoretical Concepts</h2>
+  <p>The design of Zenith is grounded in canonical compiler theory as outlined in Aho, Lam, Sethi, and Ullman (The Dragon Book):</p>
+  <ul>
+    <li><strong>Finite Automata:</strong> Lexical tokens are recognized through regular expressions mapped conceptually to Deterministic Finite Automata (DFA). A hand-crafted lookahead scanner handles multi-character operators without external dependencies.</li>
+    <li><strong>Top-Down Parsing:</strong> LL(1) Recursive Descent parsing is selected over table-driven bottom-up parsing to achieve transparent debugging, precise error localization, and natural alignment with formal grammar productions.</li>
+    <li><strong>Abstract Syntax Trees:</strong> ASTs discard grammatical concrete syntax tokens (such as parentheses and semicolons) while retaining exact structural semantics.</li>
+    <li><strong>Scoped Symbol Tables:</strong> Lexical scope is represented as a tree of scope environments linked via parent pointers, supporting O(1) insertion and hierarchical lookup.</li>
+    <li><strong>Three-Address Code:</strong> Linearized quadruples decouple language-specific grammar from back-end evaluation and target execution.</li>
+  </ul>
+
+  <h2 class="chapter-title">Chapter 5: System Architecture & Data Flow</h2>
+  <p>The Zenith compiler follows a decoupled multi-pass architecture comprising three principal stages:</p>
+  <ol>
+    <li><strong>Scanner Phase:</strong> The Lexical Analyzer transforms the raw character stream into a structured stream of Token objects with coordinate attributes.</li>
+    <li><strong>Parser Phase:</strong> The Recursive Descent Parser applies production rules to validate syntax and produce the hierarchical Abstract Syntax Tree.</li>
+    <li><strong>Semantic & Scoping Phase:</strong> The Symbol Table Builder traverses the AST, populating lexical scopes, registering symbol declarations, and enforcing immutability constraints.</li>
+    <li><strong>Error Synchronization:</strong> Panic-mode recovery seeks statement delimiters (semicolons) and declaration keywords to isolate syntax faults and detect multiple errors.</li>
+  </ol>
+
+  <h2 class="chapter-title">Chapter 6: Formal Language Specification</h2>
+  <p>The grammar of Zenith is defined formally in Extended Backus-Naur Form (EBNF), ensuring deterministic derivation without left recursion:</p>
+  <ul>
+    <li><strong>Program Structure:</strong> A program consists of a sequence of top-level statements including variable declarations, function definitions, and control structures.</li>
+    <li><strong>Variable Declarations:</strong> Explicit binding keyword ("let" for mutable, "const" for immutable) followed by identifier, type annotation, and optional initializer.</li>
+    <li><strong>Supported Data Types:</strong> Primitive types are strictly partitioned into int, float, bool, string, and void.</li>
+    <li><strong>Structured Branching:</strong> Conditionals follow deterministic "if-elif-else" constructs with parenthesized boolean conditions and enclosed statement blocks.</li>
+    <li><strong>Iterative Constructs:</strong> Supported via "while" condition loops and traditional initialized three-clause "for" loops.</li>
+    <li><strong>Functional Units:</strong> Declared with "fn" keyword, typed formal parameter lists, explicit return types, and local body blocks.</li>
+  </ul>
+
+  <h2 class="chapter-title">Chapter 7: Operator Precedence & Evaluation Order</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Precedence Level</th>
+        <th>Operator Class</th>
+        <th>Associativity & Binding Power</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Level 1 (Lowest)</td><td>Logical OR (||)</td><td>Left-to-Right evaluation</td></tr>
+      <tr><td>Level 2</td><td>Logical AND (&amp;&amp;)</td><td>Left-to-Right evaluation</td></tr>
+      <tr><td>Level 3</td><td>Equality (==, !=)</td><td>Left-to-Right evaluation</td></tr>
+      <tr><td>Level 4</td><td>Relational (&lt;, &lt;=, &gt;, &gt;=)</td><td>Left-to-Right evaluation</td></tr>
+      <tr><td>Level 5</td><td>Additive (+, -)</td><td>Left-to-Right evaluation</td></tr>
+      <tr><td>Level 6</td><td>Multiplicative (*, /, %)</td><td>Left-to-Right evaluation</td></tr>
+      <tr><td>Level 7 (Highest)</td><td>Unary (- , !)</td><td>Right-to-Left prefix binding</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <h2 class="chapter-title">Chapter 8: Three-Phase Implementation Roadmap</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Implementation Phase</th>
+        <th>Primary Deliverables</th>
+        <th>Target Outcome & Evaluation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Phase 1 (Completed)</strong></td>
+        <td>Grammar, Lexer, Parser, AST, Scoped Symbol Table</td>
+        <td>Problem definition, system design, initial prototype (Review 1: 20 Marks)</td>
+      </tr>
+      <tr>
+        <td><strong>Phase 2 (Upcoming)</strong></td>
+        <td>Type Checker, Semantic Rules, Three-Address Code</td>
+        <td>Core semantic analysis and intermediate representation (Review 2: 25 Marks)</td>
+      </tr>
+      <tr>
+        <td><strong>Phase 3 (Upcoming)</strong></td>
+        <td>Constant Folding Optimizer, Virtual Machine</td>
+        <td>Target execution, comprehensive validation, final report (Review 3: 35 Marks)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="chapter-title">Chapter 9: Academic References</h2>
+  <ol>
+    <li>Aho, A. V., Lam, M. S., Sethi, R., &amp; Ullman, J. D. (2006). <em>Compilers: Principles, Techniques, and Tools</em> (2nd ed.). Addison-Wesley.</li>
+    <li>Cooper, K. D., &amp; Torczon, L. (2011). <em>Engineering a Compiler</em> (2nd ed.). Morgan Kaufmann.</li>
+    <li>Louden, K. C. (1997). <em>Compiler Construction: Principles and Practice</em>. PWS Publishing Company.</li>
+    <li>Grune, D., van Reeuwijk, K., Bal, H. E., Jacobs, C. J., &amp; Langendoen, K. (2012). <em>Modern Compiler Design</em>. Springer.</li>
+  </ol>
+
+  <p style="margin-top: 40px; text-align: center; color: #718096; font-size: 9.5pt;">
+    Zenith Compiler Project &mdash; Compiler Design Laboratory &mdash; Phase 1 Submission Package
+  </p>
+
+</div>
+
+</body>
+</html>
