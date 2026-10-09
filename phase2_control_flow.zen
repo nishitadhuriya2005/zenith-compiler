@@ -1,0 +1,36 @@
+// ============================================================================
+// Zenith Test Case 2: Multi-Branch Control Flow & Iteration
+// Phase 2 Deliverable: Intermediate Branching, Labels & Loop TAC Execution
+// ============================================================================
+
+let score: int = 88;
+let classification: string = "Pending";
+
+// Multi-way conditional evaluation
+if (score >= 90) {
+    classification = "Exemplary";
+} elif (score >= 75) {
+    classification = "Proficient";
+} elif (score >= 50) {
+    classification = "Satisfactory";
+} else {
+    classification = "Needs Improvement";
+}
+
+print("Student Performance Tier:", classification);
+
+// While Loop: Accumulate sum of first 10 integers
+let counter: int = 1;
+let total_sum: int = 0;
+while (counter <= 10) {
+    total_sum = total_sum + counter;
+    counter = counter + 1;
+}
+print("Sum from 1 to 10 (While Loop):", total_sum);
+
+// For Loop: Compute 6! (Factorial)
+let fact: int = 1;
+for (let i: int = 1; i <= 6; i = i + 1) {
+    fact = fact * i;
+}
+print("Factorial of 6 (For Loop):", fact);

@@ -1,0 +1,25 @@
+// ============================================================================
+// Zenith Test Case 1: Advanced Arithmetic, Expressions, and Immutability
+// Phase 2 Deliverable: Semantic Analysis & Three-Address Code Verification
+// ============================================================================
+
+const BASE_OFFSET: int = 100;
+let multiplier: int = 4;
+let divisor: int = 7;
+
+// Complex arithmetic with precedence
+let raw_calc: int = BASE_OFFSET + multiplier * 15 - 40 / 2;
+let modulo_result: int = raw_calc % divisor;
+
+// Unary negation and boolean logic
+let neg_val: int = -modulo_result;
+let is_positive: bool = modulo_result > 0;
+let is_even: bool = (modulo_result % 2) == 0;
+let passes_criteria: bool = is_positive && !is_even;
+
+print("--- Arithmetic & Immutability Test ---");
+print("Base Offset (const):", BASE_OFFSET);
+print("Raw Calculation:", raw_calc);
+print("Modulo by 7:", modulo_result);
+print("Negated Modulo:", neg_val);
+print("Criteria Check Passed:", passes_criteria);

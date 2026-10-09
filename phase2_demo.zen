@@ -1,0 +1,51 @@
+// ============================================================================
+// Zenith Test Case 5: Real-World Algorithms & System Demonstration
+// Computes GCD via Euclidean algorithm and displays Fibonacci sequence.
+// ============================================================================
+
+// Euclidean Algorithm for Greatest Common Divisor
+fn compute_gcd(a: int, b: int) -> int {
+    let x: int = a;
+    let y: int = b;
+    while (y != 0) {
+        let temp: int = y;
+        y = x % y;
+        x = temp;
+    }
+    return x;
+}
+
+// Compute N-th Fibonacci number
+fn fibonacci(n: int) -> int {
+    if (n <= 1) {
+        return n;
+    }
+    let prev: int = 0;
+    let curr: int = 1;
+    for (let i: int = 2; i <= n; i = i + 1) {
+        let next_val: int = prev + curr;
+        prev = curr;
+        curr = next_val;
+    }
+    return curr;
+}
+
+// System Execution Demonstrations
+let num1: int = 54;
+let num2: int = 24;
+let gcd_val: int = compute_gcd(num1, num2);
+
+print("========================================");
+print("     ZENITH ALGORITHM DEMONSTRATION     ");
+print("========================================");
+print("Greatest Common Divisor of 54 and 24 is:");
+print(gcd_val);
+
+print("Fibonacci Number F(8):");
+let fib8: int = fibonacci(8);
+print(fib8);
+
+print("Fibonacci Number F(10):");
+let fib10: int = fibonacci(10);
+print(fib10);
+print("========================================");

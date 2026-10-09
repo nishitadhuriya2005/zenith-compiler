@@ -1,0 +1,30 @@
+// ============================================================================
+// Zenith Test Case 4: Semantic Error Detection & Static Safety (Negative Test)
+// Demonstrates Phase 2 semantic validation, type mismatch, and scope checks.
+// ============================================================================
+
+// 1. Redeclaration in same scope
+let alpha: int = 100;
+let alpha: int = 200;
+
+// 2. Type mismatch in variable declaration
+let beta: int = "cannot assign string to int";
+
+// 3. Immutability violation (modifying a const)
+const SPEED_OF_LIGHT: int = 299792458;
+SPEED_OF_LIGHT = 300000000;
+
+// 4. Use of undeclared identifier
+let total: int = undefined_variable + 50;
+
+// 5. Non-boolean condition in if-statement
+if (42 + 8) {
+    print("Invalid numeric condition");
+}
+
+// 6. Function argument type mismatch and arity error
+fn multiply_numbers(x: int, y: int) -> int {
+    return x * y;
+}
+
+let bad_call: int = multiply_numbers(10, "wrong_type");
