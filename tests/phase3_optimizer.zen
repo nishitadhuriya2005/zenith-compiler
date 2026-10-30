@@ -1,0 +1,77 @@
+// ============================================================================
+// Zenith Phase 3 Test Suite 4: TAC Optimizer Verification
+// These programs are specifically designed to exercise and prove all
+// four optimization passes:
+//   1. Constant Folding    -- literal arithmetic evaluated at compile time
+//   2. Algebraic Simplification -- x*1, x+0, x*0 reduced
+//   3. Copy Propagation    -- redundant copies eliminated
+//   4. Dead Code Elimination -- unreachable / unused temporaries removed
+// ============================================================================
+
+// ── 1. Constant Folding Test ─────────────────────────────────────────────────
+// The optimizer should evaluate these entirely at compile time:
+//   100 + 200 => 300
+//   6 * 7 => 42
+//   (10 + 5) * 2 - 3 => 27
+print("=== 1. Constant Folding Verification ===");
+
+let a: int = 100 + 200;
+let b: int = 6 * 7;
+let c: int = (10 + 5) * 2 - 3;
+
+print("100 + 200 =", a);
+print("6 * 7 =", b);
+print("(10+5)*2-3 =", c);
+
+// Boolean constant folding
+let flag: bool = (5 > 3) && (10 < 20);
+print("(5>3) && (10<20) =", flag);
+
+// ── 2. Algebraic Simplification Test ────────────────────────────────────────
+// x*1 => x, x+0 => x, x*0 => 0
+print("=== 2. Algebraic Simplification Verification ===");
+
+let x: int = 42;
+let one: int = 1;
+let zero: int = 0;
+
+let x_times_1: int = x * 1;
+let x_plus_0: int = x + 0;
+let x_times_0: int = x * 0;
+let x_minus_0: int = x - 0;
+let x_div_1: int = x / 1;
+
+print("42 * 1 =", x_times_1);
+print("42 + 0 =", x_plus_0);
+print("42 * 0 =", x_times_0);
+print("42 - 0 =", x_minus_0);
+print("42 / 1 =", x_div_1);
+
+// ── 3. Copy Propagation Test ─────────────────────────────────────────────────
+// t = x; result = t + 5  =>  result = x + 5
+print("=== 3. Copy Propagation Verification ===");
+
+let original: int = 77;
+let copy_a: int = original;
+let copy_b: int = copy_a;
+let final_val: int = copy_b + 3;
+
+print("original=77, copy chain, +3 =", final_val);
+
+// ── 4. Full Pipeline Optimization: Complex Expression ────────────────────────
+print("=== 4. Combined Optimization: Real Algorithm ===");
+
+// This function will benefit from all optimization passes
+fn compute_formula(n: int) -> int {
+    let step1: int = n * 2;
+    let step2: int = step1 + 10;
+    let step3: int = step2 * 1;          // algebraic: *1 => identity
+    let step4: int = step3 + 0;          // algebraic: +0 => identity
+    let step5: int = 3 * 3 + step4;      // constant fold: 3*3=9
+    return step5;
+}
+
+print("compute_formula(5) =", compute_formula(5));
+print("compute_formula(10) =", compute_formula(10));
+
+print("=== Optimizer Verification Complete ===");

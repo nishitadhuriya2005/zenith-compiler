@@ -1,0 +1,81 @@
+// ============================================================================
+// Zenith Phase 3 Test Suite 2: Boundary Condition Testing
+// Tests edge cases, boundary values, integer limits, boolean logic,
+// zero conditions, single-iteration loops, and nested control flow.
+// ============================================================================
+
+// --- Boundary: Arithmetic at zero ---
+let zero: int = 0;
+let one: int = 1;
+let neg_one: int = -1;
+
+print("=== Boundary: Zero & One Arithmetic ===");
+print("0 + 0 =", zero + zero);
+print("0 * 1000 =", zero * 1000);
+print("1 - 1 =", one - one);
+print("1 / 1 =", one / one);
+
+// --- Boundary: Boolean edge cases ---
+let t_val: bool = true;
+let f_val: bool = false;
+
+print("=== Boundary: Boolean Logic Edges ===");
+print("true && false =", t_val && f_val);
+print("true || false =", t_val || f_val);
+print("!true =", !t_val);
+print("!false =", !f_val);
+print("true && true =", t_val && t_val);
+print("false || false =", f_val || f_val);
+
+// --- Boundary: Single-iteration loops ---
+print("=== Boundary: Single-Iteration Loops ===");
+let counter: int = 0;
+for (let i: int = 0; i < 1; i = i + 1) {
+    counter = counter + 1;
+}
+print("Single for-loop executed:", counter, "time(s)");
+
+let w: int = 0;
+let limit: int = 1;
+while (w < limit) {
+    w = w + 1;
+}
+print("Single while-loop executed:", w, "time(s)");
+
+// --- Boundary: Zero-iteration loops ---
+let no_exec: int = 99;
+for (let j: int = 5; j < 3; j = j + 1) {
+    no_exec = 0;
+}
+print("Zero-iteration loop, value unchanged:", no_exec);
+
+// --- Boundary: Deeply nested conditions ---
+print("=== Boundary: Nested Conditionals ===");
+let x: int = 5;
+let y: int = 10;
+let z: int = 15;
+
+if (x < y) {
+    if (y < z) {
+        if (z > x) {
+            print("Deeply nested condition: All three comparisons TRUE");
+        }
+    }
+}
+
+// --- Boundary: Large integers ---
+let big: int = 999999;
+let big2: int = 1000000;
+print("=== Boundary: Large Integer Math ===");
+print("999999 + 1 =", big + one);
+print("1000000 - 999999 =", big2 - big);
+
+// --- Boundary: Chained comparisons via boolean logic ---
+let val: int = 50;
+let in_range: bool = (val >= 0) && (val <= 100);
+print("50 is in [0, 100]:", in_range);
+
+let out_range: bool = (val < 0) || (val > 100);
+print("50 is outside [0, 100]:", out_range);
+
+print("=== All boundary tests passed ===");

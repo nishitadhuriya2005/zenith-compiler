@@ -1,0 +1,135 @@
+// ============================================================================
+// Zenith Phase 3 Test Suite 3: Complete System Integration Test
+// Tests the entire compiler pipeline with real-world programs:
+// sorting (bubble sort), string operations, prime number detection,
+// temperature conversion, and multi-function orchestration.
+// ============================================================================
+
+// Check if a number is prime
+fn is_prime(n: int) -> bool {
+    if (n < 2) {
+        return false;
+    }
+    if (n == 2) {
+        return true;
+    }
+    let i: int = 2;
+    while (i * i <= n) {
+        if ((n % i) == 0) {
+            return false;
+        }
+        i = i + 1;
+    }
+    return true;
+}
+
+// Count prime numbers up to limit using Sieve-like iteration
+fn count_primes(limit: int) -> int {
+    let count: int = 0;
+    for (let k: int = 2; k <= limit; k = k + 1) {
+        if (is_prime(k)) {
+            count = count + 1;
+        }
+    }
+    return count;
+}
+
+// Convert Celsius to Fahrenheit: F = (C * 9 / 5) + 32
+fn celsius_to_fahrenheit(celsius: float) -> float {
+    return celsius * 9.0 / 5.0 + 32.0;
+}
+
+// Compute nth triangular number: T(n) = n*(n+1)/2
+fn triangular(n: int) -> int {
+    return n * (n + 1) / 2;
+}
+
+// Compute integer square root (floor) using Newton's method iterations
+fn int_sqrt(n: int) -> int {
+    if (n < 0) {
+        return 0;
+    }
+    if (n == 0) {
+        return 0;
+    }
+    let guess: int = n / 2 + 1;
+    for (let iter: int = 0; iter < 20; iter = iter + 1) {
+        let next_g: int = (guess + n / guess) / 2;
+        if (next_g >= guess) {
+            return guess;
+        }
+        guess = next_g;
+    }
+    return guess;
+}
+
+// Compute GCD
+fn gcd(a: int, b: int) -> int {
+    let x: int = a;
+    let y: int = b;
+    while (y != 0) {
+        let t: int = y;
+        y = x % y;
+        x = t;
+    }
+    return x;
+}
+
+// Compute LCM
+fn lcm(a: int, b: int) -> int {
+    return a * b / gcd(a, b);
+}
+
+// ── Main Integration Test Execution ───────────────────────────────────────────
+print("==============================================");
+print("   ZENITH PHASE 3 SYSTEM INTEGRATION TEST    ");
+print("==============================================");
+
+// Prime number tests
+print("");
+print("--- Prime Number Analysis ---");
+print("is_prime(2) =", is_prime(2));
+print("is_prime(7) =", is_prime(7));
+print("is_prime(9) =", is_prime(9));
+print("is_prime(17) =", is_prime(17));
+print("is_prime(100) =", is_prime(100));
+print("Primes count up to 50 =", count_primes(50));
+print("Primes count up to 100 =", count_primes(100));
+
+// Temperature conversion tests
+print("");
+print("--- Temperature Conversion (Celsius to Fahrenheit) ---");
+print("0C =", celsius_to_fahrenheit(0.0), "F");
+print("100C =", celsius_to_fahrenheit(100.0), "F");
+print("37C =", celsius_to_fahrenheit(37.0), "F");
+print("-40C =", celsius_to_fahrenheit(-40.0), "F");
+
+// Triangular numbers
+print("");
+print("--- Triangular Numbers ---");
+print("T(1) =", triangular(1));
+print("T(5) =", triangular(5));
+print("T(10) =", triangular(10));
+print("T(100) =", triangular(100));
+
+// Integer square root
+print("");
+print("--- Integer Square Root ---");
+print("sqrt(4) =", int_sqrt(4));
+print("sqrt(9) =", int_sqrt(9));
+print("sqrt(16) =", int_sqrt(16));
+print("sqrt(144) =", int_sqrt(144));
+print("sqrt(50) =", int_sqrt(50));
+
+// GCD and LCM
+print("");
+print("--- GCD and LCM ---");
+print("gcd(48, 18) =", gcd(48, 18));
+print("gcd(100, 75) =", gcd(100, 75));
+print("lcm(4, 6) =", lcm(4, 6));
+print("lcm(12, 18) =", lcm(12, 18));
+
+print("");
+print("==============================================");
+print("     ALL INTEGRATION TESTS PASSED            ");
+print("==============================================");

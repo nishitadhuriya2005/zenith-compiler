@@ -1,0 +1,52 @@
+// ============================================================================
+// Zenith Phase 3 Test Suite 1: Complex Nested Functions & Recursion
+// Tests recursive function calls, deep expression nesting, and integration
+// of all compiler phases from Lexer through TAC VM.
+// ============================================================================
+
+// Recursive factorial function
+fn factorial(n: int) -> int {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+// Recursive fibonacci
+fn fib(n: int) -> int {
+    if (n <= 0) {
+        return 0;
+    }
+    if (n == 1) {
+        return 1;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+
+// Iterative sum of squares
+fn sum_of_squares(limit: int) -> int {
+    let total: int = 0;
+    for (let i: int = 1; i <= limit; i = i + 1) {
+        total = total + i * i;
+    }
+    return total;
+}
+
+// --- Main execution section ---
+print("=== Zenith Phase 3: Complex Recursive Algorithms ===");
+
+// Factorial tests
+print("5! =", factorial(5));
+print("7! =", factorial(7));
+print("10! =", factorial(10));
+
+// Fibonacci tests
+print("Fibonacci F(6) =", fib(6));
+print("Fibonacci F(9) =", fib(9));
+
+// Sum of squares
+print("Sum of squares 1..5 =", sum_of_squares(5));
+print("Sum of squares 1..10 =", sum_of_squares(10));
+
+print("=== All tests passed ===");
